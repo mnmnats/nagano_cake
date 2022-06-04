@@ -12,7 +12,11 @@
 <h4>税抜き価格</h4>
 <%= f.text_field :price %>円
 <h4>販売ステータス</h4>
-<%= f.select :is_active, {'販売中': true, '販売停止中': false}, { include_blank: '選択してください'}, { class: 'form-control' , required: true } %>
+<div class="field">
+<%= f.radio_button :is_enabled, true %>
+<%= f.label :is_enabled, "販売中" %>
+<%= f.radio_button :is_active, false %>
+<%= f.label :is_active, "販売停止中" %>
 <%= f.submit "新規登録" %>
 <% end %>
 

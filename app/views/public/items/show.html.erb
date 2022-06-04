@@ -1,0 +1,26 @@
+   <div class="row">
+       <div class="col-xs-4 ">
+       <%= image_tag @item.image, size: "170x170" %>
+      </div>
+      <div class="col-xs-8 ">
+        <div>
+          <h1><%= @item.name %></h1><br>
+          <h3><%= @item.introduction %></h3><br>
+          <% if @item.is_active == true %>
+            <h2>¥<%= @item.add_tax_price.to_s(:delimited) %>（税込）</h2><br>
+          <% else %>
+            <h2>soldout</h2><br>
+          <% end %>
+        </div>
+        <% if @item.is_active == true %>
+          <%= form_with(model: @cart_item, url: cart_items_path, method: :post) do |f| %>
+            <%= f.hidden_field :item_id, value: @item.id %>
+            <%= f.number_field :amount, placeholder: "個数選択",class: 'btn btn-default',min: 1 %>
+            <%= f.submit 'カートに入れる',class: 'btn btn-primary' %>
+          <% end %>
+        <% end %>
+      </div>
+    </div>
+    <div class="col-2">
+    </div>
+  </div>

@@ -11,7 +11,12 @@
   <td><%= f.collection_select :genre_id, Genre.all, :id, :name,
     :include_blank => "選択してください" %></td></tr>
   <tr><th>税抜価格</th><td><%= f.text_field :price %>円</td></tr>
-  <tr><th>販売ステータス</th><td><%= f.select :is_active, {'販売中': true, '販売停止中': false}, { include_blank: '選択してください'}, { class: 'form-control' , required: true } %></td></tr>
+  <tr><th>販売ステータス</th>
+  <td><%=f.radio_button :is_enabled, true %>
+  <%= f.label :is_enabled, "販売中" %>
+  <%= f.radio_button :is_active, false %>
+  <%= f.label :is_active, "販売停止中" %> 
+  </tr></td>
 </table>
 <%= f.submit "変更を保存" %>
 <% end %>

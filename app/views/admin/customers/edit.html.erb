@@ -8,7 +8,7 @@
   <tr><th>住所</th><td><%= f.text_field :address %></td></tr>
   <tr><th>電話番号</th><td><%= f.text_field :telephone_number %></td></tr>
   <tr><th>メールアドレス</th><td><%=f.text_field :email %></td></tr>
-  <tr><th>会員ステータス</th><td><%= f.select :is_deleted, {'有効': true, '退会': false}, { include_blank: '選択してください'}, { class: 'form-control' , required: false } %></td></tr>
+  <tr><th>会員ステータス</th><td><%= f.select :is_deleted, {'有効': false, '退会': true}, { include_blank: '選択してください'}, { class: 'form-control' , required: false } %></td></tr>
 </table>
 <%= f.submit "変更を保存" %>
 <% end %>

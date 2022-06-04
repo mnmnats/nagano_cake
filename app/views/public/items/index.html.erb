@@ -1,0 +1,19 @@
+<div class="container">
+  	<div class="row">
+  	  <h2>商品一覧</h2>
+  	  </div>
+  	    <div class="row">
+  	      <% @items.each do |item| %>
+            <div class="box" style="float:left; margin-right:20px;">
+            <%= link_to item_path(item.id) do %>
+              <%= image_tag item.image, size: "170x170" %>
+            <% end %>
+              <p><%= item.name %></p>
+              <p>¥<%= item.price %></p>
+            </div>
+          <% end %>
+  	    </div>
+        
+  	</div>
+  </div>
+</div>
