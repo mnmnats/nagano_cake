@@ -1,14 +1,45 @@
-<h3><% @customer.last_name %><%= @customer.first_name %>さんの会員情報編集</h3>
-<%= form_with model: @customer, url: admin_customer_path do |f| %>
-<table>
-  <tr><th>会員ID</th><td><%= @customer.id %></td></tr>
-  <tr><th>氏名</th><td><%= f.text_field :last_name %><%= f.text_field :first_name %></td></tr>
-  <tr><th>フリガナ</th><td><%= f.text_field :last_name_kana %><%= f.text_field :first_name_kana %></td></tr>
-  <tr><th>郵便番号</th><td><%= f.text_field :postal_code %></td></tr>
-  <tr><th>住所</th><td><%= f.text_field :address %></td></tr>
-  <tr><th>電話番号</th><td><%= f.text_field :telephone_number %></td></tr>
-  <tr><th>メールアドレス</th><td><%=f.text_field :email %></td></tr>
-  <tr><th>会員ステータス</th><td><%= f.select :is_deleted, {'有効': false, '退会': true}, { include_blank: '選択してください'}, { class: 'form-control' , required: false } %></td></tr>
-</table>
-<%= f.submit "変更を保存" %>
-<% end %>
+<div class="container">
+  <div class="row justify-content-center">
+   <%= form_with model: @customer, url:admin_customer_path, method: :patch do |f| %>
+    <h2 class="text-center"><%= @customer.last_name %><%= @customer.first_name %>さんの会員情報編集</h2>
+
+      <table>
+        <tr>
+          <th>会員ID</th>
+          <th><%= @customer.id %></th>
+        </tr>
+        <tr>
+          <th>氏名</th>
+          <th><%= f.text_field:last_name %><%= f.text_field:first_name %></th>
+        </tr>
+        <tr>
+          <th>フリガナ</th>
+          <th><%= f.text_field:last_name_kana %><%= f.text_field:first_name_kana %></th>
+        </tr>
+        <tr>
+          <th>郵便番号</th>
+          <th><%= f.text_field:postal_code %></th>
+        </tr>
+        <tr>
+          <th>住所</th>
+          <th><%= f.text_field:address %></th>
+        </tr>
+        <tr>
+          <th>電話番号</th>
+          <th><%= f.text_field:telephone_number %></th>
+        </tr>
+        <tr>
+          <th>メ－ルアドレス</th>
+          <th><%= f.text_field:email %></th>
+        </tr>
+        <tr>
+          <th>会員ステータス</th>
+          <th><%= f.radio_button:is_deleted, false %>有効</th>
+          <th><%= f.radio_button:is_deleted, true %>退会</th>
+        </tr>
+      </table>
+      <%= f.submit "変更を保存",class: "glyphicon glyphicon-pencil btn btn-success pull-right" %>
+      <%= link_to "戻る", admin_customer_path(@customer.id),class: "btn btn-primary" %>
+   <% end %>
+  </div>
+</div>

@@ -1,6 +1,20 @@
-<h2>ジャンル編集</h2>
-<h4>ジャンル名</h4>
-<%= form_with model: @genre, url: admin_genre_path do |f| %>
-<%= f.text_field :name %>
-<%= f.submit '変更を保存' %>
-<% end %>
+<div class="container">
+  <h2 class="text-center">ジャンル編集</h2>
+  <div class="row justify-content-center">
+   <%if @genre.errors.any? %>
+  <%= @genre.errors.count %>件のエラーが発生しました
+  <ul>
+    <% @genre.errors.full_messages.each do |message| %>
+      <li><%= message %></li>
+    <% end %>
+  </ul>
+  <% end %>
+    <%= form_with model: @genre, url: admin_genre_path, local:true do |f| %>
+        <div>
+          <%= f.label :ジャンル名 %>
+          <%= f.text_field :name %>
+          <%= f.submit "変更を保存する",class: "glyphicon glyphicon-pencil btn btn-success pull-right" %>
+        </div>
+    <% end %>
+  </div>
+</div>

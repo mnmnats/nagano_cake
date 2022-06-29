@@ -1,7 +1,8 @@
 class Public::ItemsController < ApplicationController
-    
+
 def index
     @items = Item.all
+    @amount = Item.count
 end
 
 def show
@@ -9,5 +10,4 @@ def show
     @cart_item = CartItem.new
 end
 
- end
-
+end

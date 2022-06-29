@@ -1,19 +1,48 @@
-<div class="container">
-  <div class="row">
+    <div class = "row justify-content-center">
+      <h3>
+        <strong>
+          ようこそ、NaganoCakeへ！<br>
+          このサイトは、ケーキ販売のECサイトになります。<br>
+          会員でない方も商品の閲覧はできますが、<br>
+          購入には会員登録が必要になります。
+        </strong>
+      </h3>
+   </div><div class="row">
+    <div class="col-2">
+    </div>
+    <div class="col-1">
+    </div>
 
-    ようこそ、ながのCAKEへ！<br/>
-    このサイトは、ケーキ販売のECサイトになります。<br/>
-    会員でない方も商品の閲覧はできますが、<br/>
-    購入には会員登録が必要になります。
+    <div class="col-7">
+      <div class="mb-0 d-flex align-items-center justify-content-center">
+      </div>
+        <h3 class="m-4">新着商品</h3>
+
+
+      <div class="items">
+        <div class="row">
+      <% @items.each do |item| %>
+
+        <div class="col-3 p-2">
+        <%= link_to item_path(item.id) do %>
+	    <%= image_tag item.get_image, size: "100x100" %>
+        <% end %><br>
+        <%= item.name %><br>
+      <% if item.is_active == true %>
+        <%= item.price %>円
+      <% end %>
+        </div>
+      <% end %>
+
+      </div>
+    </div>
+
+    </div>
+    </div>
+
+    </div>
+    <div class="row">
+      <div class="col">
+      <%= link_to "全ての商品を見る>", items_path %>
   </div>
-  <h3>新着商品</h3>
-  <div class="row">
-  <% @items.each do |item| %>
-  
-    <div class="col-md-4">
-    <%= image_tag item.image, size: "100x100" %><br/>
-    <%= item.name %><br/>
-    ¥<%= item.price %>
   </div>
-  <% end %>
-</div>

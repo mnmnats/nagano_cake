@@ -1,72 +1,84 @@
 class Public::OrdersController < ApplicationController
-  def new
-      @order = Order.new
+  before_action :authenticate_customer!
+
+  def index
+    @orders = current_customer.orders
   end
 
- def confirm
-    @order = Order.new(order_params)
-    if params[:order][:order_address] == "0"
-      @order.postcode = current_customer.postcode
-      @order.address = current_customer.address
-      @order.name = current_customer.first_name + current_customer.last_name
-    elsif params[:order][:order_address] == "1"
-      @sipmemt_address = Address.find(params[:order][:address_id])
-      @order.name = @sipmemt_address.name
-      @order.address = @sipmemt_address.address
-      @order.postcode = @sipmemt_address.postcode
-    elsif params[:order][:order_address] == "2"
-      @order.name = params[:order][:name]
-      @order.address = params[:order][:address]
-      @order.postcode = params[:order][:postcode]
-    end
-      @cart_item = CartItem.all
-      @order.postage = 800
-      @total = 0
+  def new
+    @order = Order.new
+    @customer = current_customer
+  end
 
- end
-
-def create
+  def create
     @order = Order.new(order_params)
     @order.customer_id = current_customer.id
     @order.status = 0
     @order.save
-    @cart_items = current_customer.cart_items
-    @cart_items.each do |cart_item|
-      @order_item = OrderItem.new
-      @order_item.order_id = @order.id
-      @order_item.item_id = cart_item.item.id
-      @order_item.quantity = cart_item.quantity
-      @order_item.total_payment = (cart_item.item.price) * (cart_item.quantity) *1.1
-      @order_item.save
+    current_customer.cart_items.each do |cart_item|
+      @order_detail = OrderDetail.new
+      @order_detail.order_id = @order.id
+      @order_detail.item_id = cart_item.item_id
+      @order_detail.price = cart_item.item.price
+      @order_detail.amount = cart_item.amount
+      @order_detail.making_status = 0
+      @order_detail.save
     end
-    @cart_items.destroy_all
-    redirect_to public_thankyou_path
-end
 
- def thankyou
- end
-
-
-
-
- def index
-    @orders = Order.all
-
- end
-
-
-
+    current_customer.cart_items.destroy_all
+    redirect_to complete_order_path
+  end
 
   def show
     @order = Order.find(params[:id])
-    @order_items = @order.order_items
+    @order_detail = @order.order_details.all
+    @order.shipping_cost = 800
+    @order_details = @order.customer.cart_items.all
+    @total = @order.total_payment - @order.shipping_cost
+  end
 
+  def confirm
+    @cart_items = current_customer.cart_items
+    @order = Order.new
+    @order.customer_id = current_customer.id
+    @order.payment_method = params[:order][:payment_method]
+    total = 0
+    @cart_items.each do |cart_item|
+     total += cart_item.subtotal
+    end
+    @total_payment = total
+    @order.shipping_cost = 800
+    address_select = params[:order][:address_select]
+    if address_select == "0"
+      @address = current_customer.address
+      @postal_code = current_customer.postal_code
+      @name = current_customer.full_name
+    elsif address_select == "1"
+      address = Address.find(params[:order][:address_id])
+      @address = address.address
+      @postal_code = address.postal_code
+      @name = address.name
+    elsif address_select == "2"
+      @address = params[:order][:address]
+      @postal_code = params[:order][:postal_code]
+      @name = params[:order][:name]
+    end
+  end
+
+  def thanks
   end
 
 
+  private
 
-   private
   def order_params
-    params.require(:order).permit(:status, :postcode, :address, :name, :postage, :total_payment, :payment_method)
+    params.require(:order).permit(:postal_code, :address, :name, :shipping_cost, :total_payment, :payment_method, :address_select)
   end
+
+  def address_params
+    params.require(:address).permit(:customer_id, :postal_code, :address, :name)
+  end
+
+
+
 end

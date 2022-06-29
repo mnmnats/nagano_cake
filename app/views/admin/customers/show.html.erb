@@ -1,18 +1,49 @@
-<h3><%= @customer.last_name %><%= @customer.first_name %>さんの会員詳細</h3>
-
-<table>
-  <tr><th>会員ID</th><td><%= @customer.id %></td></tr>
-  <tr><th>氏名</th><td><%= @customer.last_name %><%= @customer.first_name %></td></tr>
-  <tr><th>フリガナ</th><td><%= @customer.last_name_kana %><%= @customer.first_name_kana %></td></tr>
-  <tr><th>郵便番号</th><td><%= @customer.postal_code %></td></tr>
-  <tr><th>住所</th><td><%= @customer.address %></td></tr>
-  <tr><th>電話番号</th><td><%= @customer.telephone_number %></td></tr>
-  <tr><th>メールアドレス</th><td><%= @customer.email %></td></tr>
-  <tr><th>会員ステータス</th>
-  <td><% if @customer.is_deleted == false %>有効</td>
-  <% else %><td>退会</td></tr>
-  <% end %>
-</table>
-<div class="text-align: center;">
-  <%= link_to edit_admin_customer_path, class: "btn btn-sm btn-success" do %>編集する<% end %>
+<h2 class="text-center"><%= @customer.last_name %><%= @customer.first_name %>さんの会員詳細</h2>
+<div class="row justify-content-center">
+  <div class="row">
+    <div class="col-xs-6">
+      <table class="table">
+        <tr>
+          <th>会員ID</th>
+          <th><%= @customer.id %></th>
+        </tr>
+        <tr>
+          <th>氏名</th>
+          <th><%= @customer.last_name %><%= @customer.first_name %></th>
+        </tr>
+        <tr>
+          <th>フリガナ</th>
+          <th><%= @customer.last_name_kana %><%= @customer.first_name_kana %></th>
+        </tr>
+        <tr>
+          <th>郵便番号</th>
+          <th><%= @customer.postal_code %></th>
+        </tr>
+        <tr>
+          <th>住所</th>
+          <th><%= @customer.address %></th>
+        </tr>
+        <tr>
+          <th>電話番号</th>
+          <th><%= @customer.telephone_number %></th>
+        </tr>
+        <tr>
+          <th>メ－ルアドレス</th>
+          <th><%= @customer.email %></th>
+        </tr>
+        <tr>
+          <th>会員ステータス</th>
+          <th>
+            <% if @customer.is_deleted == false %>
+              有効
+            <% else %>
+            　退会
+            <% end %>
+          </th>
+        </tr>
+      </table>
+      <%= link_to "編集する", edit_admin_customer_path,class: "glyphicon glyphicon-pencil btn btn-success pull-right" %>
+      <%= link_to "注文履歴一覧を見る", root_path,class: "btn btn-primary" %>
+    </div>
+  </div>
 </div>

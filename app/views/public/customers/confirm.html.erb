@@ -1,0 +1,11 @@
+<div class="cs = "container">
+  <div class = "row justify-content-center mt-5">
+    <div class = "col-9">
+      <h1 class = "text-center"><strong>本当に退会しますか？</strong></h1>
+      <div class = "row justify-content-around mt-5">
+      <%= link_to "退会しない", customer_path(@customer), class: "btn btn-primary mr-4" %>
+      <%= link_to "退会する", withdrawal_customer_path, method: :patch, data: { confirm: "本当に退会しますか？" }, class: "btn btn-danger" %>
+      </div>
+    </div>
+  </div>
+</div>

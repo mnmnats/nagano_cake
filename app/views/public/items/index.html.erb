@@ -1,19 +1,20 @@
-<div class="container">
-  	<div class="row">
-  	  <h2>商品一覧</h2>
-  	  </div>
-  	    <div class="row">
-  	      <% @items.each do |item| %>
-            <div class="box" style="float:left; margin-right:20px;">
-            <%= link_to item_path(item.id) do %>
-              <%= image_tag item.image, size: "170x170" %>
+<div class = "container">
+  <div class = "row">
+    <div class = "col">
+      <h2 class = "text-center mt-5">商品一覧（全<%= @amount %>件）</h2><br>
+      <table class = table>
+        <tr class = "card-deck">
+          <% @items.each do |item| %>
+          <th class = "card-body text-center">
+            <%= link_to item_path(item) do%>
+　　　　　　<%= image_tag item.get_image, size: "100x100" %> 
             <% end %>
-              <p><%= item.name %></p>
-              <p>¥<%= item.price %></p>
-            </div>
+            <p><%= item.name %></p>
+            <p><%= (item.price*1.1).floor.to_s(:delimited, delimiter: ',') %>円</p>
+          </th>
           <% end %>
-  	    </div>
-        
-  	</div>
+        </tr>
+      </table>
+    </div>
   </div>
 </div>

@@ -1,28 +1,46 @@
 Rails.application.routes.draw do
-devise_for :customers,skip: [:passwords], controllers: {
-  registrations: "public/registrations",
-  sessions: 'public/sessions'
-}
-  scope module: :public do
-    delete :cart_items, to: 'cart_items#destroy_all', as: 'cart_items'
-
-    root to: 'homes#top'
-    get 'about' => 'homes#about',as:'about'
-    patch '/customers/withdraw' => 'customers#withdraw'
-    get '/customers/unsubscribe' => 'customers#unsubscribe'
-    post "/orders/confirm"=>"orders#confirm", as: 'confirm'
-    get "/orders/thankyou"=>"orders#thankyou", as: 'thankyou'
-
-    resources :customers, :addresses, :cart_items, :items, :orders
-  end
-devise_for :admin, skip: [:registrations, :passwords] ,controllers: {
-  sessions: "admin/sessions"
-
-}
+  # devise_for :customers, controllers: {
+  #   sessions:      'customers/sessions',
+  #   passwords:     'customers/passwords',
+  #   registrations: 'customers/registrations'
+  # }
 
   namespace :admin do
- root to: 'homes#top'
-    resources :genres, :items, :customers, :order_details , :orders
+    root 'homes#top'
+    resources :items
+    resources :genres, only:[:index, :create, :edit, :update]
+    resources :customers, only:[:index, :edit, :update, :show]
+    resources :orders, only:[:show, :update]
+    resources :order_details, only:[:update]
   end
+
+  scope module: 'public' do
+    post "/orders/confirm" => "orders#confirm", as: "confirm_order"
+    get "/orders/complete" => "orders#complete", as: "complete_order"
+    resources :orders, only:[:new, :create, :index, :show]
+    delete "cart_items/destroy_all" => "cart_items#destroy_all", as: "destroy_all_cart_items"
+    resources :cart_items, only:[:index, :update, :destroy, :create]
+    resources :items, only:[:index, :show]
+    resources :addresses, only:[:index, :edit, :create, :update, :destroy]
+    resources :homes, only:[:top]
+    get "/customers/mypage" => "customers#show", as: "customer"
+    get 'customers/mypage/:id/edit' => "customers#edit", as: "edit_customer"
+    get 'customers/confirm_withdrawal' => "customers#confirm", as: "confirm_withdrawal_customer"
+    patch "/customers/withdrawal" => "customers#withdrawal", as: "withdrawal_customer"
+    resources :customers, only:[:update]
+    root 'homes#top'
+    get "/about" => "homes#about", as: "about"
+  end
+
+  devise_for :customers, skip: [:passwords,], controllers: {
+    registrations: "public/registrations",
+    sessions: 'public/sessions'
+  }
+
+  devise_for :admin, skip: [:registrations, :passwords] , controllers: {
+    sessions: 'admin/sessions',
+  }
+
+
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 end

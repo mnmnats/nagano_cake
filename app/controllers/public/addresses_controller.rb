@@ -1,21 +1,42 @@
 class Public::AddressesController < ApplicationController
-  def index
-    @addresses = Address.all
+
+
+def index
+    @addresses = current_customer.addresses.all
     @address = Address.new
-  end
-  def create
+end
+
+def create
     @address = Address.new(address_params)
-    
-    @address.save
-    redirect_to addresses_path
-  end
+    @address.customer_id = current_customer.id
+    if @address.save
+      redirect_to addresses_path
+    else
+      render :index
+    end
+end
 
-  def edit
+def edit
     @address = Address.find(params[:id])
-  end
+end
 
-  private
-  def address_params
-    params.require(:address).permit(:address,:name,:postal_code,:customer_id)
-  end
+def update
+    @address = Address.find(params[:id])
+    if @address.update(address_params)
+      redirect_to addresses_path
+    else
+      render :edit
+    end
+end
+
+def destroy
+    @address = Address.find(params[:id])
+    @address.destroy
+    redirect_to addresses_path
+end
+
+private
+def address_params
+    params.require(:address).permit(:postal_code, :address, :name)
+end
 end
